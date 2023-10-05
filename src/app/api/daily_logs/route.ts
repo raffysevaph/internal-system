@@ -1,10 +1,35 @@
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "@src/functions/prisma";
 
-export async function GET() {
-  const dailyLogs = await prisma.daily_Logs.findMany();
+export async function GET(req: NextRequest) {
+  // QUERY PARAMETERS
+  const limit: any = req.nextUrl.searchParams.get('limit') === null ? 5 : Number(req.nextUrl.searchParams.get('limit'));
+  const offset: any = req.nextUrl.searchParams.get('offset') === null ? 1 : Number(req.nextUrl.searchParams.get('offset'));
+  const fromDate: any = req.nextUrl.searchParams.get('fromDate');
+  const toDate: any = req.nextUrl.searchParams.get('toDate');
+  
+  let data_per_page = offset;
+  let current_page = limit;
 
-  return NextResponse.json({ message: 'hello world', data: dailyLogs });
+  // DATE FILTER
+  let date_filter: any = {};
+
+  if (fromDate !== null) date_filter['gte'] = new Date(fromDate)
+  if (toDate !== null) date_filter['lte'] = new Date(toDate)
+
+  const dailyLogs = await prisma.daily_Logs.findMany({
+    where: {
+      deletedAt: null,
+      createdAt: date_filter
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    take: data_per_page,
+    skip: (current_page - 1) * data_per_page,
+  });
+
+  return NextResponse.json({ message: 'successfully got data', data: dailyLogs, limit: data_per_page, offset: (current_page - 1) * data_per_page });
 }
 
 export async function POST(req: NextRequest) {
