@@ -11,15 +11,16 @@ datasource db {
 }
 
 model Daily_Logs {
-  id            Int      @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   user_id       String?
-  yesterday     String?  @db.Text
-  today         String?  @db.Text
-  accomplish    String?  @db.Text
-  impediment    String?  @db.Text
-  daily_journal String?  @db.Text
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  yesterday     String?   @db.Text
+  today         String?   @db.Text
+  accomplish    String?   @db.Text
+  impediment    String?   @db.Text
+  daily_journal String?   @db.Text
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
 
   @@map("daily_logs")
 }
