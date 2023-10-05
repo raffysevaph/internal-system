@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "@src/functions/prisma";
-// import moment from "moment";
 
 export async function GET() {
   const dailyLogs = await prisma.daily_Logs.findMany();
