@@ -15,12 +15,6 @@ export async function POST(req: Request) {
     password,
   })
 
-  console.log('data', data);
-  console.log('error', error);
-  console.log('\n\n');
-
-  // return NextResponse.json({message: data})
-
   return NextResponse.redirect(requestUrl.origin, {
     status: 301,
   })
