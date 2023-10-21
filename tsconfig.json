@@ -23,7 +23,8 @@
       "@src/*": ["./src/*"],
       "@controllers/*": ["./prisma/controllers/*"],
       "@utils/*": ["./src/utils/*"],
-      "@functions/*": ["./src/functions/*"]
+      "@functions/*": ["./src/functions/*"],
+      "@components/*": ["./src/components/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/functions/supabase.js"],
