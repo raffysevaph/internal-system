@@ -1,5 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import Header from "@src/components/header";
+import HeaderMobile from "@src/components/header-mobile";
+import SideNav from "@src/components/side-nav";
+import PageWrapper from "@src/components/page-wrapper";
+import MarginWidthWrapper from "@src/components/margin-width-wrapper";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,7 +18,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="bg-white">
+        <div className="flex">
+          <SideNav />
+          <main className="flex-1">
+            <MarginWidthWrapper>
+              <Header />
+              <HeaderMobile />
+              <PageWrapper>{children}</PageWrapper>
+            </MarginWidthWrapper>
+          </main>
+        </div>
+      </body>
     </html>
   );
 }
