@@ -1,8 +1,27 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 import PastLogsTable from "./PastLogsTable";
 
-const PastLogs = () => {
+const PastLogs = ({ currentUser }: { currentUser: any }) => {
+  const [pastLogs, setPastLogs] = useState([]);
+
+  useEffect(() => {
+    // GETS PAST LOGS
+    if (currentUser?.user_id) {
+      let url = `/api/daily_logs?`;
+
+      if (currentUser?.user_id) url += `userId=${currentUser?.user_id}&`;
+
+      axios
+        .get(url)
+        .then((res) => setPastLogs(res.data.data))
+        .catch((err) => console.log(err));
+    }
+  }, [currentUser]);
+
   return (
     <>
       <div className="flex mt-5">
@@ -46,7 +65,7 @@ const PastLogs = () => {
         </div>
       </div>
 
-      <PastLogsTable />
+      <PastLogsTable pastLogs={pastLogs} />
     </>
   );
 };

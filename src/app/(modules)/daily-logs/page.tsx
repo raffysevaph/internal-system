@@ -25,7 +25,7 @@ const DailyLogs = () => {
         currentUser={currentUser}
       />
 
-      <PastLogs />
+      <PastLogs currentUser={currentUser} />
     </>
   );
 };

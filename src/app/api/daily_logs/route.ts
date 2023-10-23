@@ -27,8 +27,8 @@ export async function GET(req: NextRequest) {
     orderBy: {
       createdAt: 'desc'
     },
-    take: data_per_page,
-    skip: (current_page - 1) * data_per_page,
+    // take: data_per_page,
+    // skip: (current_page - 1) * data_per_page,
   });
 
   return NextResponse.json({ message: 'successfully got data', data: dailyLogs, limit: data_per_page, offset: (current_page - 1) * data_per_page });
