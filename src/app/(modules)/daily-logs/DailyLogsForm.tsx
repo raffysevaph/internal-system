@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import moment from "moment";
 import Swal from "sweetalert2";
@@ -15,7 +16,14 @@ const resetForm = {
   id: null,
 };
 
-const DailyLogsForm = ({ currentDateAndTime }: { currentDateAndTime: any }) => {
+const DailyLogsForm = ({
+  currentDateAndTime,
+  currentUser,
+}: {
+  currentDateAndTime: any;
+  currentUser: any;
+}) => {
+  const [isDisableUpdate, setIsDisableUpdate] = useState(false);
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       yesterday: "",
@@ -33,13 +41,22 @@ const DailyLogsForm = ({ currentDateAndTime }: { currentDateAndTime: any }) => {
     const id = data?.id;
     delete data?.currentDateAndTime;
     delete data?.id;
-    const obj = data;
+    let obj = data;
+    obj["user_id"] = currentUser?.user_id;
 
     const response = await axios.post("/api/daily_logs", obj, {
       headers: { "Content-Type": "application/json" },
     });
 
+    setIsDisableUpdate(true);
+
     console.log(response);
+    Swal.fire({
+      icon: "success",
+      text: "Successfully added daily log",
+      showConfirmButton: false,
+      timer: 2500,
+    });
   };
 
   const onNew = () => {
@@ -50,6 +67,7 @@ const DailyLogsForm = ({ currentDateAndTime }: { currentDateAndTime: any }) => {
       timer: 2000,
     });
     reset(resetForm);
+    setIsDisableUpdate(false);
   };
 
   return (
@@ -128,8 +146,11 @@ const DailyLogsForm = ({ currentDateAndTime }: { currentDateAndTime: any }) => {
           <div></div>
           <div className="flex flex-row-reverse pr-5 mt-4 text-white">
             <button
-              className="bg-hatchit-green px-5 py-2 rounded-md"
+              className={`bg-hatchit-green px-5 py-2 rounded-md ${
+                isDisableUpdate ? "opacity-75" : ""
+              }`}
               type="submit"
+              disabled={isDisableUpdate}
             >
               Update
             </button>
