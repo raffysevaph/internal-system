@@ -7,7 +7,8 @@ export async function GET(req: NextRequest) {
   const offset: any = req.nextUrl.searchParams.get('offset') === null ? 1 : Number(req.nextUrl.searchParams.get('offset'));
   const fromDate: any = req.nextUrl.searchParams.get('fromDate');
   const toDate: any = req.nextUrl.searchParams.get('toDate');
-  
+  const userId: any = req.nextUrl.searchParams.get('userId') === null ? null : req.nextUrl.searchParams.get('userId');
+
   let data_per_page = offset;
   let current_page = limit;
 
@@ -20,13 +21,14 @@ export async function GET(req: NextRequest) {
   const dailyLogs = await prisma.daily_Logs.findMany({
     where: {
       deletedAt: null,
-      createdAt: date_filter
+      createdAt: date_filter,
+      user_id: userId
     },
     orderBy: {
       createdAt: 'desc'
     },
-    take: data_per_page,
-    skip: (current_page - 1) * data_per_page,
+    // take: data_per_page,
+    // skip: (current_page - 1) * data_per_page,
   });
 
   return NextResponse.json({ message: 'successfully got data', data: dailyLogs, limit: data_per_page, offset: (current_page - 1) * data_per_page });
@@ -34,7 +36,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  
+
   const dailyLogs = await prisma.daily_Logs.create({
     data: body
   })
