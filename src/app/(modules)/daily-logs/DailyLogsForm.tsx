@@ -143,7 +143,9 @@ const DailyLogsForm = ({
             ></textarea>
           </div>
 
-          <div></div>
+          <div>
+            <span>testing git session</span>
+          </div>
           <div className="flex flex-row-reverse pr-5 mt-4 text-white">
             <button
               className={`bg-hatchit-green px-5 py-2 rounded-md ${
